@@ -47,6 +47,20 @@ def print_songs(file):
             print()
 
 def print_menu():
-    return
+    print("1. Add new song")
+    print("2. Show all songs")
+    print("3. Quit")
 
-print_songs(file)
+    user_input = input("Enter your choice: ")
+
+    match int(user_input):
+        case 1:
+            song_info = get_song_info()
+            save_new_song(file, song_info)
+        case 2:
+            print_songs(file)
+        case 3:
+            return
+
+
+print_menu()
