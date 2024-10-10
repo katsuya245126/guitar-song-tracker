@@ -104,6 +104,7 @@ def print_menu():
 
         user_input = input('Enter your choice: ')
 
+        # Check if user entered a digit. If not, display error
         if not user_input.isdigit():
             print('\nPlease enter a number.\n')
             pause()
