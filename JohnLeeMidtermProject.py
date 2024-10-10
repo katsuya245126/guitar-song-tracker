@@ -9,9 +9,16 @@ This program helps users keep track of songs they're learning / learned. They ca
 information like song title, youtube link, tuning, and capo position in a text file.
 '''
 
+# Import needed to use os.path.exists
+import os
+
 # File name to pass to functions. Should be in the same directory as the
 # main file.
 file = 'guitar_songs.txt'
+
+# Check if the file exists in current directory. If not, create it
+if not os.path.exists(file):
+    open(file, "w+").close()
 
 # Gets song information and returns as a list
 def get_song_info():
@@ -112,6 +119,5 @@ def print_menu():
         # to see result. Doesn't happen on choice 4 since
         # it exits without reaching this line.
         pause()
-
 
 print_menu()
