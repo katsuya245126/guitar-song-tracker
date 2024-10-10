@@ -10,7 +10,7 @@ information like song title, youtube link, tuning, and capo position in a text f
 '''
 
 # File name to pass to functions. Should be in the same directory as the
-# main file
+# main file.
 file = 'guitar_songs.txt'
 
 # Gets song information and returns as a list
@@ -31,6 +31,8 @@ def save_new_song(file, song_list):
     # to make sure the file is closed automatically.
     with open(file, 'a') as file:
         file.write(new_song + '\n')
+    
+    print('\nSong saved successfully!\n')
 
 # Prints all the songs in the given file
 def print_songs(file):
@@ -78,6 +80,10 @@ def search_song(song_title, file):
     
     print('\nSong not found!\n')
 
+# Just adds a pause
+def pause():
+    input("\nPress Enter to continue...\n")
+
 # Prints menu
 def print_menu():
     while True:
@@ -101,6 +107,11 @@ def print_menu():
                 print_songs(file)
             case 4:
                 return
+        
+        # Add pause after choosing menu options to allow user
+        # to see result. Doesn't happen on choice 4 since
+        # it exits without reaching this line.
+        pause()
 
 
 print_menu()
