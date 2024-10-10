@@ -18,7 +18,7 @@ file = 'guitar_songs.txt'
 
 # Check if the file exists in current directory. If not, create it
 if not os.path.exists(file):
-    open(file, "w+").close()
+    open(file, 'w+').close()
 
 # Gets song information and returns as a list
 def get_song_info():
@@ -52,7 +52,8 @@ def print_songs(file):
 
             # Print the title on the first line
             print(f'Title: {title}')
-            
+            print()
+
             # Print the rest of the details below the title with indent
             print(f'\tYouTube Link: {link}')
             print(f'\tTuning: {tuning}')
@@ -89,7 +90,7 @@ def search_song(song_title, file):
 
 # Just adds a pause
 def pause():
-    input("\nPress Enter to continue...\n")
+    input('Press Enter to continue...\n')
 
 # Prints menu
 def print_menu():
@@ -114,6 +115,8 @@ def print_menu():
                 print_songs(file)
             case 4:
                 return
+            case _:
+                print('\nPlease choose a number between 1 - 4\n')
         
         # Add pause after choosing menu options to allow user
         # to see result. Doesn't happen on choice 4 since
