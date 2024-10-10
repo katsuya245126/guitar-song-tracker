@@ -104,6 +104,11 @@ def print_menu():
 
         user_input = input('Enter your choice: ')
 
+        if not user_input.isdigit():
+            print('\nPlease enter a number.\n')
+            pause()
+            continue
+
         match int(user_input):
             case 1:
                 song_info = get_song_info()
