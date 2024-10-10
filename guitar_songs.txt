@@ -1,3 +1,4 @@
 aaa	bbb	ccc	ddd
 abaaba	dfdfdfdf	dfdfdfdf	aaaa
 Stairway to heaven	www.nice.com	standard	0
+Fly Me to the Moon	www.good.com	Standard	0
