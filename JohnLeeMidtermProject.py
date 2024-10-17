@@ -88,7 +88,7 @@ def search_song(song_title, file):
     
     print('\nSong not found!\n')
 
-# Just adds a pause
+# Just adds a pause in between actions so user can see the results
 def pause():
     input('Press Enter to continue...\n')
 
@@ -121,7 +121,7 @@ def print_menu():
                 print_songs(file)
             case 4:
                 return
-            case _:
+            case _: # Default case if user enters a number other than 1 - 4
                 print('\nPlease choose a number between 1 - 4\n')
         
         # Add pause after choosing menu options to allow user
