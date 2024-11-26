@@ -19,6 +19,7 @@ information like song title, link to the song, tuning, and capo position in a te
 # Use regex in search to find parts
 # Implement logging
 # Sanitize input
+# Multiple songs found in search_song()?
 
 # Import needed to use os.path.exists
 import os
@@ -93,7 +94,7 @@ def search_song(song_title, file):
 
                 return song_obj
     
-    print('\nSong not found!\n')
+    return None
 
 # Just adds a pause in between actions so user can see the results
 def pause():
@@ -123,7 +124,12 @@ def print_menu():
                 save_new_song(file, song_info)
             case 2:
                 song_title = input('Enter song title: ')
-                search_song(song_title, file)
+                song_obj = search_song(song_title, file)
+                if song_obj:
+                    print()
+                    song_obj.print()
+                else:
+                    print('\nSong not found!\n')
             case 3:
                 print_songs(file)
             case 4:
