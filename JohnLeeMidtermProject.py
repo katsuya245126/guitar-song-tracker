@@ -54,7 +54,10 @@ def get_song_info():
     return song.Song(title, link, tuning, capo)
 
 # Saves new song information in the given file
-def save_new_song(file, song_obj):
+def add_new_song(file):
+    # Collect the new song info
+    song_obj = get_song_info()
+
     # Get list of all songs and append the new file
     songs_list = get_all_songs(file)
     songs_list.append(song_obj.dict())
@@ -137,8 +140,7 @@ def print_menu():
 def handle_menu_choice(choice):
     match choice:
         case 1:
-            song_info = get_song_info()
-            save_new_song(file, song_info)
+            add_new_song(file)
         case 2:
             song_title = input('Enter song title: ')
             song_obj = search_song(song_title, file)
