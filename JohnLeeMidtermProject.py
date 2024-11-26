@@ -23,15 +23,28 @@ information like song title, link to the song, tuning, and capo position in a te
 # Import needed to use os.path.exists
 import os
 import re
-import song
+import song # My class
+import json
 
 # File name to pass to functions. Should be in the same directory as the
 # main file.
-file = 'guitar_songs.txt'
+file = 'guitar_songs.json'
 
 # Check if the file exists in current directory. If not, create it
 if not os.path.exists(file):
     open(file, 'w+').close()
+
+# Reads all the data from the file and returns as a list
+# Makes it easier to make changes to the file
+def get_all_songs(file):
+    # Just in case there's an error with reading the json file
+    try:
+        with open(file, 'r') as file:
+            data = json.load(file)
+        
+        return data
+    except:
+        return []
 
 # Gets song information and returns as a list
 def get_song_info():
@@ -40,17 +53,18 @@ def get_song_info():
     tuning = input('Enter tuning: ')
     capo = input('Enter capo position: ')
 
-    return [title, link, tuning, capo]
+    return song.Song(title, link, tuning, capo)
 
 # Saves new song information in the given file
-def save_new_song(file, song_list):
-    new_song = '\t'.join(song_list)
-    
+def save_new_song(file, song_obj):
+    # Convert song_obj to dictionary, and use indent to make it easier to read
+    song_json = json.dumps(song_obj.dict(), indent=4)
+
     # I initially just had file.write() but I had issues managing
     # file modes (w, a, r), so I switched to with open()
     # to make sure the file is closed automatically.
     with open(file, 'a') as file:
-        file.write(new_song + '\n')
+        file.write(song_json)
     
     print('\nSong saved successfully!\n')
 
