@@ -17,6 +17,8 @@ information like song title, youtube link, tuning, and capo position in a text f
 # Implement modify_song()
 # Implement delete_song()
 # Update comment so it's not just youtube link
+# Use regex in search to find parts
+# Implement logging
 
 # Import needed to use os.path.exists
 import os
