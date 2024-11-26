@@ -10,12 +10,8 @@ information like song title, link to the song, tuning, and capo position in a te
 '''
 
 # TODO
-# Change to JSON
 # Add link opener
-# Implement get_all_songs()
-# Use get_all_songs() in print_songs()
-# Implement modify_song()
-# Implement delete_song()
+# Implement edit_song() and delete_song()
 # Implement logging
 # Sanitize input
 # Multiple songs found in search_song()?
@@ -80,7 +76,7 @@ def print_songs(file):
     for song_dict in songs_data:
         # values() returns the values as list, so we can unpack
         title, link, tuning, capo = song_dict.values()
-        
+
         # Make Song object from the data and use the class' print() function
         # Making object for every song might seem inefficient but I don't think it matters at this scale
         song.Song(title, link, tuning, capo).print()
@@ -105,6 +101,22 @@ def search_song(song_title, file):
     # If no matching title is found return None
     return None
 
+# Makes user choose between min and max number
+def get_valid_choice(min, max):
+    while True:
+        user_input = input('Enter your choice: ')
+
+        if not user_input.isdigit():
+            print('\nPlease enter a number.\n')
+            pause()
+            continue
+        elif int(user_input) < min or int(user_input) > max:
+            print(f'\nPlease choose a number between {min} - {max}\n')
+            pause()
+            continue
+
+        return int(user_input)   
+
 # Just adds a pause in between actions so user can see the results
 def pause():
     input('Press Enter to continue...\n')
@@ -119,36 +131,43 @@ def print_menu():
         print('4. Quit')
         print()
 
-        user_input = input('Enter your choice: ')
+        user_input = get_valid_choice(1, 4)
+        handle_menu_choice(user_input)
 
-        # Check if user entered a digit. If not, display error
-        if not user_input.isdigit():
-            print('\nPlease enter a number.\n')
-            pause()
-            continue
+def handle_menu_choice(choice):
+    match choice:
+        case 1:
+            song_info = get_song_info()
+            save_new_song(file, song_info)
+        case 2:
+            song_title = input('Enter song title: ')
+            song_obj = search_song(song_title, file)
 
-        match int(user_input):
-            case 1:
-                song_info = get_song_info()
-                save_new_song(file, song_info)
-            case 2:
-                song_title = input('Enter song title: ')
-                song_obj = search_song(song_title, file)
-                if song_obj:
-                    print()
-                    song_obj.print()
-                else:
-                    print('\nSong not found!\n')
-            case 3:
-                print_songs(file)
-            case 4:
-                return
-            case _: # Default case if user enters a number other than 1 - 4
-                print('\nPlease choose a number between 1 - 4\n')
-        
-        # Add pause after choosing menu options to allow user
-        # to see result. Doesn't happen on choice 4 since
-        # it exits without reaching this line.
-        pause()
+            if song_obj:
+                print()
+                song_obj.print()
+
+                print()
+                print('1. Open link')
+                print('2. Edit song')
+                print('3. Delete song')
+                print('4. Back to main menu')
+                print()
+                choice = get_valid_choice(1, 4)
+
+            else:
+                print('\nSong not found!\n')
+        case 3:
+            print_songs(file)
+        case 4:
+            print('\nGoodbye!')
+            exit()
+        case _: # Default case if user enters a number other than 1 - 4
+            print('\nPlease choose a number between 1 - 4\n')
+
+    # Add pause after choosing menu options to allow user
+    # to see result. Doesn't happen on choice 4 since
+    # it exits without reaching this line.
+    pause()
 
 print_menu()
