@@ -9,6 +9,15 @@ This program helps users keep track of songs they're learning / learned. They ca
 information like song title, youtube link, tuning, and capo position in a text file.
 '''
 
+# TODO
+# Add link opener
+# make search_song() return dicitonary
+# Implement get_all_songs()
+# Use get_all_songs() in print_songs()
+# Implement modify_song()
+# Implement delete_song()
+# Update comment so it's not just youtube link
+
 # Import needed to use os.path.exists
 import os
 
