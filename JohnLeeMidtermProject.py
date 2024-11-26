@@ -59,21 +59,12 @@ def save_new_song(file, song_list):
 def print_songs(file):
     # Open in read mode since we're just printing
     with open(file, 'r') as file:
-        for song in file:
+        for song_line in file:
             # Strip the new line at the end of the row first, then split by tabs
-            song_list = song.strip().split('\t')
+            song_list = song_line.strip().split('\t')
             title, link, tuning, capo = song_list
-
-            # Print the title on the first line
-            print(f'Title: {title}')
-            print()
-
-            # Print the rest of the details below the title with indent
-            print(f'\tYouTube Link: {link}')
-            print(f'\tTuning: {tuning}')
-            print(f'\tCapo: {capo}')
-            
-            print()
+            song_obj = song.Song(title, link, tuning, capo)
+            song_obj.print()
 
 # Searches for the given song title and prints it
 def search_song(song_title, file):
