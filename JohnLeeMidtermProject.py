@@ -18,9 +18,12 @@ information like song title, link to the song, tuning, and capo position in a te
 # Implement delete_song()
 # Use regex in search to find parts
 # Implement logging
+# Sanitize input
 
 # Import needed to use os.path.exists
 import os
+import re
+import song
 
 # File name to pass to functions. Should be in the same directory as the
 # main file.
@@ -73,28 +76,22 @@ def print_songs(file):
 
 # Searches for the given song title and prints it
 def search_song(song_title, file):
-    # Clean the song title and make it lower case
-    song_title = song_title.strip().lower()
+    # Clean the song title, then make regex object to match song title. Ignore case
+    song_title = song_title.strip()
+    song_regex = re.compile(fr'{song_title}', re.IGNORECASE)
 
     # Open in read mode since we're just printing
     with open(file, 'r') as file:
-        for song in file:
+        for song_line in file:
             # Strip the new line at the end of the row first, then split by tabs
-            song_list = song.strip().split('\t')
+            song_list = song_line.strip().split('\t')
             title, link, tuning, capo = song_list
 
-            if title.lower() == song_title:
-                # Print the title on the first line
-                print(f'Title: {title}')
-                
-                # Print the rest of the details below the title with indent
-                print(f'\tYouTube Link: {link}')
-                print(f'\tTuning: {tuning}')
-                print(f'\tCapo: {capo}')
-                
-                print()
+            # Return the song as dictionary
+            if song_regex.search(title):
+                song_obj = song.Song(title, link, tuning, capo)
 
-                return
+                return song_obj
     
     print('\nSong not found!\n')
 
