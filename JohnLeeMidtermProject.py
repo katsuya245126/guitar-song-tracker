@@ -6,7 +6,7 @@
 Guitar song tracker program
 
 This program helps users keep track of songs they're learning / learned. They can store
-information like song title, youtube link, tuning, and capo position in a text file.
+information like song title, link to the song, tuning, and capo position in a text file.
 '''
 
 # TODO
@@ -16,7 +16,6 @@ information like song title, youtube link, tuning, and capo position in a text f
 # Use get_all_songs() in print_songs()
 # Implement modify_song()
 # Implement delete_song()
-# Update comment so it's not just youtube link
 # Use regex in search to find parts
 # Implement logging
 
