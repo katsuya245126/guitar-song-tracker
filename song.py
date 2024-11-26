@@ -10,7 +10,7 @@ class Song:
     # Prints values
     def print(self):
         # Print the title on the first line
-        print(f'Title: {self.title}')
+        print(f'{self.title}')
         print()
 
         # Print the rest of the details below the title with indent

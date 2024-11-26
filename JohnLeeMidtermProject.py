@@ -34,19 +34,21 @@ file = 'guitar_songs.json'
 if not os.path.exists(file):
     open(file, 'w+').close()
 
-# Reads all the data from the file and returns as a list
-# Makes it easier to make changes to the file
+# Reads all the data from the file and returns as a list of dictionary of songs
 def get_all_songs(file):
     # Just in case there's an error with reading the json file
     try:
+        # Open the file and load the content and return
         with open(file, 'r') as file:
             data = json.load(file)
         
         return data
     except:
+        # It could return an error if the file is empty in which case we can just return empty list
         return []
 
 # Gets song information and returns as a list
+# ADD sanitizing!!!!!!!!!!!!
 def get_song_info():
     title = input('Enter song title: ')
     link = input('Enter youtube link: ')
@@ -57,47 +59,50 @@ def get_song_info():
 
 # Saves new song information in the given file
 def save_new_song(file, song_obj):
-    # Convert song_obj to dictionary, and use indent to make it easier to read
-    song_json = json.dumps(song_obj.dict(), indent=4)
+    # Get list of all songs and append the new file
+    songs_list = get_all_songs(file)
+    songs_list.append(song_obj.dict())
 
-    # I initially just had file.write() but I had issues managing
-    # file modes (w, a, r), so I switched to with open()
-    # to make sure the file is closed automatically.
-    with open(file, 'a') as file:
-        file.write(song_json)
-    
-    print('\nSong saved successfully!\n')
+    # Try saving song. Print messages accordingly
+    try:
+        # Overwrites the current file
+        with open(file, 'w') as file:
+            json.dump(songs_list, file, indent=4)
+        
+        print('\nSong saved successfully!\n')
+    except:
+        print('\nSomething went wrong!\n')
 
 # Prints all the songs in the given file
 def print_songs(file):
-    # Open in read mode since we're just printing
-    with open(file, 'r') as file:
-        for song_line in file:
-            # Strip the new line at the end of the row first, then split by tabs
-            song_list = song_line.strip().split('\t')
-            title, link, tuning, capo = song_list
-            song_obj = song.Song(title, link, tuning, capo)
-            song_obj.print()
+    songs_data = get_all_songs(file)
+
+    for song_dict in songs_data:
+        # values() returns the values as list, so we can unpack
+        title, link, tuning, capo = song_dict.values()
+        
+        # Make Song object from the data and use the class' print() function
+        # Making object for every song might seem inefficient but I don't think it matters at this scale
+        song.Song(title, link, tuning, capo).print()
 
 # Searches for the given song title and prints it
 def search_song(song_title, file):
-    # Clean the song title, then make regex object to match song title. Ignore case
+    # Clean the given song title, then make regex object to match song title. Ignores case
     song_title = song_title.strip()
-    song_regex = re.compile(fr'{song_title}', re.IGNORECASE)
+    song_regex = re.compile(song_title, re.IGNORECASE)
 
-    # Open in read mode since we're just printing
-    with open(file, 'r') as file:
-        for song_line in file:
-            # Strip the new line at the end of the row first, then split by tabs
-            song_list = song_line.strip().split('\t')
-            title, link, tuning, capo = song_list
+    # Loop through all the songs 
+    song_list = get_all_songs(file)
+    for song_dict in song_list:
+        # If song title matches the regex
+        if song_regex.search(song_dict['title']):
+            # Make Song object and return
+            title, link, tuning, capo = song_dict.values()
+            song_obj = song.Song(title, link, tuning, capo)
 
-            # Return the song as dictionary
-            if song_regex.search(title):
-                song_obj = song.Song(title, link, tuning, capo)
-
-                return song_obj
+            return song_obj
     
+    # If no matching title is found return None
     return None
 
 # Just adds a pause in between actions so user can see the results
