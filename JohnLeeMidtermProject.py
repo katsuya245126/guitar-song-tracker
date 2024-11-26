@@ -10,13 +10,12 @@ information like song title, link to the song, tuning, and capo position in a te
 '''
 
 # TODO
+# Change to JSON
 # Add link opener
-# make search_song() return dicitonary
 # Implement get_all_songs()
 # Use get_all_songs() in print_songs()
 # Implement modify_song()
 # Implement delete_song()
-# Use regex in search to find parts
 # Implement logging
 # Sanitize input
 # Multiple songs found in search_song()?
