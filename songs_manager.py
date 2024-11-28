@@ -44,14 +44,14 @@ def print_songs(file):
         Song(title, link, tuning, capo).print()
 
 # Gets song information and returns as a list
-# ADD sanitizing!!!!!!!!!!!!
 def get_song_info():
-    title = input('Enter song title: ')
-    link = input('Enter youtube link: ')
-    tuning = input('Enter tuning: ')
-    capo = input('Enter capo position: ')
+    new_song = Song()
+    new_song.set_title()
+    new_song.set_link()
+    new_song.set_tuning()
+    new_song.set_capo()
 
-    return Song(title, link, tuning, capo)
+    return new_song  
 
 # Saves new song information in the given file
 def add_new_song(file):

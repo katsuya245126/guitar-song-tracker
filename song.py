@@ -10,9 +10,9 @@ import webbrowser
 from utils import get_valid_choice
 
 class Song:
-    def __init__(self, title, link, tuning, capo):
+    def __init__(self, title="", link="", tuning="", capo=""):
         # Create new song with title, link, tuning, and capo
-        # Assuming input is sanitized
+        # Attributes default to empty string
         self.title = title
         self.link = link
         self.tuning = tuning
@@ -34,6 +34,56 @@ class Song:
     def open_link(self):
         webbrowser.open(self.link)
 
+    # Sets the title of the song. Validates input. Accepts alphanumeric characters + space
+    def set_title(self):
+        while True:
+            title = input('Enter title: ')
+        
+            # Removes spaces temporarily otherwise isalnum() returns false
+            if title.replace(' ', '').isalnum():
+                self.title = title
+                return
+            else:
+                print("\nInvalid title. Please only use alphanumeric characters + space\nPlease try again\n")
+    
+    # Sets the link of the song. Validates input
+    def set_link(self):
+        while True:
+            link = input('Enter link: ')
+        
+            # Link has to start with 'http://' or 'https://' otherwise the webbrowser module
+            # does not open the link. Also links should not contain spaces
+            if link.startswith(('http://', 'https://')) and (not ' ' in link):
+                self.link = link
+                return
+            else:
+                print("\nLink cannot contain spaces and have to start with http:// or https://\nPlease try again\n")
+    
+    # Sets the tuning of the song. Validates input. 
+    def set_tuning(self):
+        while True:
+            tuning = input('Enter tuning: ')
+        
+            # Only accepts alphabetic characters.
+            if tuning.isalpha():
+                self.tuning = tuning
+                return
+            else:
+                print("\nInvalid tuning. Please only input alphabetic characters.\nPlease try again\n")
+
+    # Sets the capo position of the song. Validates input. 
+    def set_capo(self):
+        while True:
+            capo = input('Enter capo position: ')
+        
+            # Capo position should be a number and it should be between 0 (no capo) to 9.
+            # Could maybe be higher but highly unlikely
+            if capo.isdigit() and (int(capo) >= 0 and int(capo) <= 9):
+                self.capo = int(capo)
+                return
+            else:
+                print("\nInvalid capo position. Please choose a number between 0-9.\nPlease try again\n")
+    
     # Edits the song info
     def edit(self):
         while True:
