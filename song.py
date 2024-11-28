@@ -1,3 +1,6 @@
+# This class represents a song. It can print details about itself, open links, and edit attributes.
+# It can also return itself as a dictionary.
+
 # To open links
 import webbrowser
 from utils import get_valid_choice
@@ -18,7 +21,7 @@ class Song:
         print()
 
         # Print the rest of the details below the title with indent
-        print(f'\tYouTube Link: {self.link}')
+        print(f'\tLink: {self.link}')
         print(f'\tTuning: {self.tuning}')
         print(f'\tCapo: {self.capo}')
         
@@ -33,7 +36,7 @@ class Song:
             print()
             print("Edit Song:")
             print("1. Title")
-            print("2. YouTube Link")
+            print("2. Link")
             print("3. Tuning")
             print("4. Capo")
             print("5. Back")

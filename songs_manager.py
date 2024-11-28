@@ -1,9 +1,13 @@
+# This module manages songs stored in a JSON file. It can read, print, add, search, edit, and delete songs.
+# It uses the Song class to handle individual song details. 
+
 # For handling json
 import json
 # Regex
 import re
 
 # Local module imports. Using from X import Y here to avoid having to type module name
+
 # My class
 from song import Song
 # Utility functions (used in Song class too)
@@ -19,7 +23,8 @@ def get_all_songs(file):
         
         return data
     except:
-        # It could return an error if the file is empty in which case we can just return empty list
+        # If the file is empty or we encounter
+        # an error while reading file, we can just return empty list
         return []
 
 # Prints all the songs in the given file
