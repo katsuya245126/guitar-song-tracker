@@ -1,3 +1,7 @@
+# INF360 - Programming in Python
+# John Lee
+# Final Project
+
 # This module just stores utility functions
 
 # Makes user choose between min and max number

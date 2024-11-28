@@ -1,6 +1,6 @@
 # INF360 - Programming in Python
 # John Lee
-# Midterm Project
+# Final Project
 
 '''
 Guitar song tracker program
@@ -11,6 +11,7 @@ You can create, read, update and delete the songs.
 '''
 
 # TODO
+# Move get song info to song class
 # Implement logging
 # Sanitize input
 # Multiple songs found in search_song()?

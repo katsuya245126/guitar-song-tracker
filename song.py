@@ -1,3 +1,7 @@
+# INF360 - Programming in Python
+# John Lee
+# Final Project
+
 # This class represents a song. It can print details about itself, open links, and edit attributes.
 # It can also return itself as a dictionary.
 

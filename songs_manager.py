@@ -1,3 +1,7 @@
+# INF360 - Programming in Python
+# John Lee
+# Final Project
+
 # This module manages songs stored in a JSON file. It can read, print, add, search, edit, and delete songs.
 # It uses the Song class to handle individual song details. 
 
@@ -9,7 +13,7 @@ import re
 # Local module imports. Using from X import Y here to avoid having to type module name
 
 # My class
-from song import Song
+from song import *
 # Utility functions (used in Song class too)
 from utils import get_valid_choice, pause
 
