@@ -13,6 +13,10 @@ You can create, read, update and delete the songs.
 # TODO
 # Implement logging
 # Multiple songs found in search_song()?
+#   Use findall()
+#   Print all matching songs
+#   Display song titles as options
+#   User can choose the right song
 
 # Import needed to use os.path.exists
 import os
