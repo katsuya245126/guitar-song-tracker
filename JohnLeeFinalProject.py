@@ -6,14 +6,12 @@
 Guitar song tracker program
 
 This program helps users keep track of songs they're learning / learned. They can store
-information like song title, link to the song, tuning, and capo position in a text file.
+information like song title, link to the song, tuning, and capo position in a JSON file.
 You can create, read, update and delete the songs. 
 '''
 
 # TODO
-# Move get song info to song class
 # Implement logging
-# Sanitize input
 # Multiple songs found in search_song()?
 
 # Import needed to use os.path.exists
