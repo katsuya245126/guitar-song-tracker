@@ -12,20 +12,31 @@ You can create, read, update and delete the songs.
 
 # TODO
 # Implement logging
-# Multiple songs found in search_song()?
-#   Use findall()
-#   Print all matching songs
-#   Display song titles as options
-#   User can choose the right song
 
+# Try catch block not needed for these modules since they're available with python
 # Import needed to use os.path.exists
 import os
+import sys
+# For logging
+import logging
+logging.basicConfig(filename='myProgramLog.txt', 
+                    level=logging.DEBUG, 
+                    format='%(asctime)s -  %(levelname)s -  %(message)s')
 
-# Local module imports. Using from X import Y here to avoid having to type module name
-# Utility functions (used in Song class too)
-from utils import *
-# Songs manager module (Manages CRUD operations for songs)
-from songs_manager import *
+logging.debug('Program starting...')
+
+# Local module imports. Using from X import Y here to avoid having to type module name.
+# Try catch block needed here since they're local modules
+try:
+    # Utility functions (used in Song class too)
+    from utils import *
+    # Songs manager module (Manages CRUD operations for songs)
+    from songs_manager import *
+    logging.debug('Successfully imported local modules in main file.')
+except:
+    logging.critical('failed to import utils or songs_manager in main file')
+    print('Failed to import utils or songs_manager in main file. Exiting.')
+    sys.exit()
 
 # File name to pass to functions. Should be in the same directory as the
 # main file.
@@ -33,7 +44,14 @@ file = 'guitar_songs.json'
 
 # Check if the file exists in current directory. If not, create it
 if not os.path.exists(file):
-    open(file, 'w+').close()
+    try:
+        open(file, 'w+').close()
+        logging.debug(f'Created file: {file}')
+    except:
+        # Print out error message before exiting. 
+        logging.critical(f'Failed to create file: {file}')
+        print('Could not create file. Exiting...')
+        sys.exit()
 
 # Prints menu
 def print_menu():
@@ -70,7 +88,7 @@ def handle_menu_choice(choice):
             print_songs(file)
         case 4:
             print('\nGoodbye!')
-            exit()
+            sys.exit()
 
     # Add pause after choosing menu options to allow user
     # to see result. Doesn't happen on choice 4 since
