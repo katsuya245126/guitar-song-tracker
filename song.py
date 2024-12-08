@@ -7,7 +7,18 @@
 
 # To open links
 import webbrowser
-from utils import get_valid_choice
+import logging
+import sys
+
+# Local module imports
+try:
+    # Utility functions
+    from utils import *
+    logging.info('Successfully imported local modules in song.py.')
+except:
+    logging.critical('Failed to import utils in song.py')
+    print('Failed to import utils in song.py. Exiting...')
+    sys.exit()
 
 class Song:
     def __init__(self, title="", link="", tuning="", capo=""):
@@ -31,7 +42,9 @@ class Song:
         
         print()
     
+    # Opens the link of the song
     def open_link(self):
+        logging.debug(f'Opening the link for {self.title}: {self.link}')
         webbrowser.open(self.link)
 
     # Sets the title of the song. Validates input. Accepts alphanumeric characters + space
@@ -116,6 +129,7 @@ class Song:
 
         # Make sure the title is not empty
         if new_title:
+            logging.info(f'Changing title from {self.title} to {new_title}')
             self.title = new_title
             print("Title updated!")
         else:
@@ -127,6 +141,7 @@ class Song:
 
         # Make sure the link is not empty
         if new_link:
+            logging.info(f'Changing link from {self.link} to {new_link}')
             self.link = new_link
             print("Link updated!")
         else:
@@ -138,6 +153,7 @@ class Song:
 
         # Make sure the tuning is not empty
         if new_tuning:
+            logging.info(f'Changing tuning from {self.tuning} to {new_tuning}')
             self.tuning = new_tuning
             print("Tuning updated!")
         else:
@@ -149,6 +165,7 @@ class Song:
 
         # Validation is handled in get_valid_choice()
         new_capo = get_valid_choice(0, 9)
+        logging.info(f'Changing capo position from {self.capo} to {new_capo}')
         self.capo = new_capo
         print("Capo position updated successfully!")
         
