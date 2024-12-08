@@ -32,7 +32,7 @@ try:
     from utils import *
     # Songs manager module (Manages CRUD operations for songs)
     from songs_manager import *
-    logging.debug('Successfully imported local modules in main file.')
+    logging.info('Successfully imported local modules in main file.')
 except:
     logging.critical('failed to import utils or songs_manager in main file')
     print('Failed to import utils or songs_manager in main file. Exiting.')
@@ -44,6 +44,7 @@ file = 'guitar_songs.json'
 
 # Check if the file exists in current directory. If not, create it
 if not os.path.exists(file):
+    logging.debug(f'{file} not found. Creating...')
     try:
         open(file, 'w+').close()
         logging.debug(f'Created file: {file}')
@@ -88,6 +89,7 @@ def handle_menu_choice(choice):
             print_songs(file)
         case 4:
             print('\nGoodbye!')
+            logging.debug('Program Exiting...')
             sys.exit()
 
     # Add pause after choosing menu options to allow user
