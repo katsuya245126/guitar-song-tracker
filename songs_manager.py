@@ -141,7 +141,7 @@ def edit_song(file, song_obj):
             json.dump(songs_list, file, indent=4)
             logging.info(f'Successfully saved edited song: {song_obj.dict()}')
 
-        print('\nSong updated successfully!\n')
+        print('\nSong updated successfully!')
     except:
         logging.error(f'Somethign went wrong trying to edit song: {song_obj.dict()}')
         print('\nSomething went wrong! Song not edited.\n')
