@@ -50,7 +50,7 @@ def print_songs(file):
         logging.warning(f'No songs found in {file}. File might be empty.')
         print('\nTHE LIST IS EMPTY!\n')
     else:
-        logging.info(f'Printing all {len(songs_data)} songs from file.')
+        logging.debug(f'Printing {len(songs_data)} songs from file.')
         for song_dict in songs_data:
             # values() returns the values as list, so we can unpack
             title, link, tuning, capo = song_dict.values()
@@ -68,7 +68,7 @@ def get_song_info():
     new_song.set_link()
     new_song.set_tuning()
     new_song.set_capo()
-    logging.info(f'New song collected: {new_song.dict()}')
+    logging.debug(f'New song collected: {new_song.dict()}')
 
     return new_song  
 
