@@ -100,7 +100,8 @@ def search_song(file):
 
     # Clean the given song title, then make regex object to match song title. Ignores case
     song_title = song_title.strip()
-    song_regex = re.compile(song_title, re.IGNORECASE)
+    # Had to add re.escape() since special characters caused error
+    song_regex = re.compile(re.escape(song_title), re.IGNORECASE)
     logging.info(f'Searching for song: {song_title}')
 
     # Loop through all the songs 
