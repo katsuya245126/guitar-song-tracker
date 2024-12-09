@@ -33,6 +33,7 @@ def get_all_songs(file):
             data = json.load(file)
             logging.info(f'Successfully read all song data from {file.name}')
         
+        # Return list of ditionary of songs
         return data
     except:
         # If the file is empty or we encounter
@@ -44,8 +45,9 @@ def get_all_songs(file):
 def print_songs(file):
     songs_data = get_all_songs(file)
 
+    # If get_all_songs() returns an empty list, the file could be missing or empty
     if not songs_data:
-        logging.warning(f'No songs found in {file}.')
+        logging.warning(f'No songs found in {file}. File might be empty.')
         print('\nTHE LIST IS EMPTY!\n')
     else:
         logging.info(f'Printing all {len(songs_data)} songs from file.')
@@ -57,8 +59,10 @@ def print_songs(file):
             # Making object for every song might seem inefficient but I don't think it matters at this scale
             Song(title, link, tuning, capo).print()
 
-# Gets song information and returns as a list
+# Gets song information and returns the song object
 def get_song_info():
+    # Create song object and call each setter method to set the attributes
+    # Inputs are sanitized within the method
     new_song = Song()
     new_song.set_title()
     new_song.set_link()
@@ -89,7 +93,7 @@ def add_new_song(file):
         logging.error(f'Something went wrong trying to add new song to {file.name}')
         print('\nSomething went wrong! Song not added.\n')
 
-# Searches for the given song title and prints it
+# Searches for the given song title and returns the song object
 def search_song(file):
     # Get the song title
     song_title = input('Enter song title: ')
@@ -105,8 +109,9 @@ def search_song(file):
         # If song title matches the regex
         if song_regex.search(song_dict['title']):
             logging.info(f'Matching song found: {song_dict}')
-            # Make Song object and return
+            # Unpack the tuples returned from values() to each variable
             title, link, tuning, capo = song_dict.values()
+            # Make song object from the variables and return
             song_obj = Song(title, link, tuning, capo)
 
             return song_obj
@@ -121,10 +126,10 @@ def edit_song(file, song_obj):
     songs_list = get_all_songs(file)
 
     # Using enumearte here since we need the index to replace the edited song
-    for index, song in enumerate(songs_list):
+    for index, song_dict in enumerate(songs_list):
         # Compare dictionary
-        if song == song_obj.dict():
-            logging.info(f'Editing song: {song['title']}')
+        if song_dict == song_obj.dict():
+            logging.info(f'Editing song: {song_dict['title']}')
             # Make changes to the song_obj and replace the matching song in the list
             song_obj.edit()
             songs_list[index] = song_obj.dict()
@@ -149,6 +154,7 @@ def delete_song(file, song_obj):
     try:
         # Try to remove the song by matchign the dictionary
         # It should be found since song_obj was made by search_song()
+        # No need to use enumerate here since we are just removing the song and don't need the index
         songs_list.remove(song_obj.dict())
 
         # Overwrite with the song removed
