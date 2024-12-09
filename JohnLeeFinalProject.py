@@ -10,12 +10,11 @@ information like song title, link to the song, tuning, and capo position in a JS
 You can create, read, update and delete the songs. 
 '''
 
-# TODO
-# Implement logging
-
 # Try catch block not needed for these modules since they're available with python
 # Import needed to use os.path.exists
 import os
+# Import needed for sys.exit. Just exit() was working but in the video the professor uses
+# sys.exit() so I've used this just in case
 import sys
 # For logging
 import logging
@@ -28,7 +27,7 @@ logging.debug('Program starting...')
 # Local module imports. Using from X import Y here to avoid having to type module name.
 # Try catch block needed here since they're local modules
 try:
-    # Utility functions (used in Song class too)
+    # Utility functions
     from utils import *
     # Songs manager module (Manages CRUD operations for songs)
     from songs_manager import *
@@ -46,6 +45,7 @@ file = 'guitar_songs.json'
 if not os.path.exists(file):
     logging.debug(f'{file} not found. Creating...')
     try:
+        # Creates file for reading and writing and closes it
         open(file, 'w+').close()
         logging.debug(f'Created file: {file}')
     except:
