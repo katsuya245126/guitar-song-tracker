@@ -86,7 +86,7 @@ function renderSongs(songs) {
         const status = song.status || 'wishlist';
         card.innerHTML = `
             <div class="song-info">
-                <h3><a class="song-title-link" href="/song/${i}">${escHtml(song.title)}</a></h3>
+                <h3><a class="song-title-link" href="/song/${song.id}">${escHtml(song.title)}</a></h3>
                 <div class="song-meta">
                     <span>🎸 ${escHtml(song.tuning)}</span>
                     <span>Capo ${song.capo}</span>
@@ -94,8 +94,8 @@ function renderSongs(songs) {
                 </div>
             </div>
             <div class="song-actions">
-                <button class="btn btn-ghost btn-sm" onclick="openEdit(${i})">Edit</button>
-                <button class="btn btn-danger btn-sm" onclick="deleteSong(${i})">Delete</button>
+                <button class="btn btn-ghost btn-sm" onclick="openEdit(${song.id})">Edit</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteSong(${song.id})">Delete</button>
             </div>
         `;
         songList.appendChild(card);
@@ -152,13 +152,13 @@ document.getElementById('add-btn').addEventListener('click', () => {
     openModal(songModal);
 });
 
-async function openEdit(index) {
+async function openEdit(id) {
     const res = await fetch('/api/songs');
     const songs = await res.json();
-    const song = songs[index];
+    const song = songs.find(s => s.id === id);
     if (!song) return;
 
-    editingIndex = index;
+    editingIndex = id;
     modalTitle.textContent = 'Edit Song';
     document.getElementById('field-title').value = song.title;
     document.getElementById('field-link').value = song.link;

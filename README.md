@@ -1,4 +1,23 @@
-# Guitar song tracker program
-This program helps users keep track of songs they're learning / learned. They can store information like song title, link to the song, tuning, and capo position in a JSON file. You can create, read, update and delete the songs. 
+# Guitar Song Tracker
 
-Made for INF360 - Programming in Python at FHSU as final project
+A web app for keeping track of songs you're learning on guitar. Store each song's tuning, capo position, a YouTube link, and a learning status. Data is persisted in a PostgreSQL database.
+
+## Features
+
+- Add, edit, and delete songs
+- Filter by status (Wishlist, In Progress, Learned), tuning, and capo
+- Search by title
+- Song detail page with embedded YouTube video
+- Import and export your library as a JSON file
+
+## Running locally
+
+Requires Python 3, Flask, and a PostgreSQL database (e.g. [Neon](https://neon.tech) free tier).
+
+```bash
+pip install -r requirements.txt
+export DATABASE_URL="your-postgres-connection-string"
+python app.py
+```
+
+Then open `http://127.0.0.1:5000` in your browser.
