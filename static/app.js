@@ -11,8 +11,10 @@ let pendingImport = null;
 let toastTimer = null;
 let activeFilter = 'all';
 let activeTuning = '';
+let activeCapo = '';
 
 const tuningFilter = document.getElementById('tuning-filter');
+const capoFilter = document.getElementById('capo-filter');
 
 const STATUS_LABELS = {
     'wishlist': 'Wishlist',
@@ -49,17 +51,24 @@ async function loadSongs(query = '') {
     if (activeTuning) {
         songs = songs.filter(s => s.tuning.toLowerCase() === activeTuning.toLowerCase());
     }
+    if (activeCapo !== '') {
+        songs = songs.filter(s => String(s.capo) === activeCapo);
+    }
     renderSongs(songs);
-    updateTuningOptions(songs);
+    updateFilterOptions();
 }
 
-function updateTuningOptions(filteredSongs) {
-    // Collect all tunings from the full unfiltered list to keep options stable
-    const current = tuningFilter.value;
+function updateFilterOptions() {
     fetch('/api/songs').then(r => r.json()).then(all => {
+        const currentTuning = tuningFilter.value;
         const tunings = [...new Set(all.map(s => s.tuning.toUpperCase()))].sort();
         tuningFilter.innerHTML = '<option value="">All tunings</option>' +
-            tunings.map(t => `<option value="${t}"${t === current.toUpperCase() ? ' selected' : ''}>${t}</option>`).join('');
+            tunings.map(t => `<option value="${t}"${t === currentTuning.toUpperCase() ? ' selected' : ''}>${t}</option>`).join('');
+
+        const currentCapo = capoFilter.value;
+        const capos = [...new Set(all.map(s => s.capo))].sort((a, b) => a - b);
+        capoFilter.innerHTML = '<option value="">All capos</option>' +
+            capos.map(c => `<option value="${c}"${String(c) === currentCapo ? ' selected' : ''}>Capo ${c}</option>`).join('');
     });
 }
 
@@ -114,6 +123,11 @@ document.querySelectorAll('.filter-tab').forEach(tab => {
 
 tuningFilter.addEventListener('change', () => {
     activeTuning = tuningFilter.value;
+    loadSongs(searchInput.value.trim());
+});
+
+capoFilter.addEventListener('change', () => {
+    activeCapo = capoFilter.value;
     loadSongs(searchInput.value.trim());
 });
 
