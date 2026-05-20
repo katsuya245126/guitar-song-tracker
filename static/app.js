@@ -12,6 +12,7 @@ let toastTimer = null;
 let activeFilter = 'all';
 let activeTuning = '';
 let activeCapo = '';
+let adminPassword = null;
 
 const tuningFilter = document.getElementById('tuning-filter');
 const capoFilter = document.getElementById('capo-filter');
@@ -21,6 +22,44 @@ const STATUS_LABELS = {
     'in-progress': 'In Progress',
     'learned': 'Learned',
 };
+
+// ── Admin auth ───────────────────────────────────────────────────────────────
+
+function authFetch(url, options = {}) {
+    options.headers = { ...options.headers, 'X-Admin-Password': adminPassword || '' };
+    return fetch(url, options);
+}
+
+async function unlockAdmin() {
+    const pw = prompt('Enter admin password:');
+    if (!pw) return;
+
+    // Test the password with a dummy request
+    const res = await fetch('/api/songs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Password': pw },
+        body: JSON.stringify({ title: '__test__', tuning: 'x', capo: 0, link: '', status: 'wishlist' }),
+    });
+
+    if (res.status === 401) {
+        showToast('Wrong password.');
+        return;
+    }
+
+    // Password accepted — delete the test song and unlock UI
+    const data = await res.json();
+    if (data.ok) {
+        const songs = await fetch('/api/songs').then(r => r.json());
+        const test = songs.find(s => s.title === '__test__');
+        if (test) await fetch(`/api/songs/${test.id}`, { method: 'DELETE', headers: { 'X-Admin-Password': pw } });
+    }
+
+    adminPassword = pw;
+    document.getElementById('admin-controls').style.display = 'flex';
+    document.getElementById('unlock-btn').style.display = 'none';
+    loadSongs(searchInput.value.trim());
+    showToast('Unlocked.');
+}
 
 // ── Utilities ────────────────────────────────────────────────────────────────
 
@@ -93,10 +132,11 @@ function renderSongs(songs) {
                     <span class="status-badge status-${status}">${STATUS_LABELS[status] || status}</span>
                 </div>
             </div>
+            ${adminPassword ? `
             <div class="song-actions">
                 <button class="btn btn-ghost btn-sm" onclick="openEdit(${song.id})">Edit</button>
                 <button class="btn btn-danger btn-sm" onclick="deleteSong(${song.id})">Delete</button>
-            </div>
+            </div>` : ''}
         `;
         songList.appendChild(card);
     });
@@ -181,7 +221,7 @@ songForm.addEventListener('submit', async (e) => {
     const url = editingIndex !== null ? `/api/songs/${editingIndex}` : '/api/songs';
     const method = editingIndex !== null ? 'PUT' : 'POST';
 
-    const res = await fetch(url, {
+    const res = await authFetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -203,7 +243,7 @@ songModal.addEventListener('click', (e) => { if (e.target === songModal) closeMo
 
 async function deleteSong(index) {
     if (!confirm('Delete this song?')) return;
-    const res = await fetch(`/api/songs/${index}`, { method: 'DELETE' });
+    const res = await authFetch(`/api/songs/${index}`, { method: 'DELETE' });
     if (res.ok) {
         loadSongs(searchInput.value.trim());
         showToast('Song deleted.');
@@ -240,7 +280,7 @@ document.getElementById('import-upload-btn').addEventListener('click', async () 
     const formData = new FormData();
     formData.append('file', fileInput.files[0]);
 
-    const res = await fetch('/api/import', { method: 'POST', body: formData });
+    const res = await authFetch('/api/import', { method: 'POST', body: formData });
     const data = await res.json();
 
     if (!res.ok) {
@@ -269,7 +309,7 @@ document.getElementById('import-overwrite-btn').addEventListener('click', () => 
 async function confirmImport(overwrite) {
     if (!pendingImport) return;
 
-    const res = await fetch('/api/import/confirm', {
+    const res = await authFetch('/api/import/confirm', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

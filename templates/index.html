@@ -11,9 +11,12 @@
 <header>
     <h1>Guitar Song Tracker</h1>
     <div class="header-actions">
-        <button class="btn btn-secondary" id="import-btn">Import</button>
         <button class="btn btn-secondary" id="export-btn">Export</button>
-        <button class="btn btn-primary" id="add-btn">+ Add Song</button>
+        <div id="admin-controls" style="display:none;">
+            <button class="btn btn-secondary" id="import-btn">Import</button>
+            <button class="btn btn-primary" id="add-btn">+ Add Song</button>
+        </div>
+        <button class="btn btn-ghost" id="unlock-btn" onclick="unlockAdmin()">Admin</button>
     </div>
 </header>
 

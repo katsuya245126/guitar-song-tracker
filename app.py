@@ -2,7 +2,8 @@ import os
 import json
 import re
 import logging
-from flask import Flask, request, jsonify, render_template, send_file
+from flask import Flask, request, jsonify, render_template, send_file, abort
+from functools import wraps
 from io import BytesIO
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -11,6 +12,16 @@ logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
+
+
+def require_password(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        password = os.environ.get('ADMIN_PASSWORD')
+        if password and request.headers.get('X-Admin-Password') != password:
+            return jsonify({'error': 'Unauthorized'}), 401
+        return f(*args, **kwargs)
+    return decorated
 
 
 def get_conn():
@@ -93,6 +104,7 @@ def get_songs():
 
 
 @app.route('/api/songs', methods=['POST'])
+@require_password
 def add_song():
     data = request.get_json()
     with get_conn() as conn:
@@ -107,6 +119,7 @@ def add_song():
 
 
 @app.route('/api/songs/<int:song_id>', methods=['PUT'])
+@require_password
 def update_song(song_id):
     data = request.get_json()
     with get_conn() as conn:
@@ -124,6 +137,7 @@ def update_song(song_id):
 
 
 @app.route('/api/songs/<int:song_id>', methods=['DELETE'])
+@require_password
 def delete_song(song_id):
     with get_conn() as conn:
         with conn.cursor() as cur:
@@ -152,6 +166,7 @@ def export_songs():
 
 
 @app.route('/api/import', methods=['POST'])
+@require_password
 def import_songs():
     file = request.files.get('file')
     if not file:
@@ -185,6 +200,7 @@ def import_songs():
 
 
 @app.route('/api/import/confirm', methods=['POST'])
+@require_password
 def import_confirm():
     data = request.get_json()
     new_songs = data.get('new', [])
