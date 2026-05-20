@@ -12,7 +12,7 @@ let toastTimer = null;
 let activeFilter = 'all';
 let activeTuning = '';
 let activeCapo = '';
-let adminPassword = null;
+let adminPassword = sessionStorage.getItem('adminPassword');
 
 const tuningFilter = document.getElementById('tuning-filter');
 const capoFilter = document.getElementById('capo-filter');
@@ -55,6 +55,7 @@ async function unlockAdmin() {
     }
 
     adminPassword = pw;
+    sessionStorage.setItem('adminPassword', pw);
     document.getElementById('admin-controls').style.display = 'flex';
     document.getElementById('unlock-btn').style.display = 'none';
     loadSongs(searchInput.value.trim());
@@ -331,5 +332,10 @@ async function confirmImport(overwrite) {
 }
 
 // ── Init ─────────────────────────────────────────────────────────────────────
+
+if (adminPassword) {
+    document.getElementById('admin-controls').style.display = 'flex';
+    document.getElementById('unlock-btn').style.display = 'none';
+}
 
 loadSongs();
