@@ -63,6 +63,8 @@ def song_detail(index):
 def get_songs():
     query = request.args.get('q', '').strip()
     songs = read_songs()
+    for s in songs:
+        s.setdefault('status', 'wishlist')
     if query:
         pattern = re.compile(re.escape(query), re.IGNORECASE)
         songs = [s for s in songs if pattern.search(s['title'])]
@@ -78,6 +80,7 @@ def add_song():
         'link': data['link'],
         'tuning': data['tuning'],
         'capo': data['capo'],
+        'status': data.get('status', 'wishlist'),
     })
     write_songs(songs)
     logging.info(f"Added song: {data['title']}")
@@ -95,6 +98,7 @@ def update_song(index):
         'link': data['link'],
         'tuning': data['tuning'],
         'capo': data['capo'],
+        'status': data.get('status', 'wishlist'),
     }
     write_songs(songs)
     logging.info(f"Updated song at index {index}: {data['title']}")
@@ -136,6 +140,7 @@ def import_songs():
     # Validate basic structure
     required = {'title', 'link', 'tuning', 'capo'}
     for song in incoming:
+        song.setdefault('status', 'wishlist')
         if not required.issubset(song.keys()):
             return jsonify({'error': 'Invalid song format'}), 400
 

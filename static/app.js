@@ -9,6 +9,13 @@ const toast = document.getElementById('toast');
 let editingIndex = null;
 let pendingImport = null;
 let toastTimer = null;
+let activeFilter = 'all';
+
+const STATUS_LABELS = {
+    'wishlist': 'Wishlist',
+    'in-progress': 'In Progress',
+    'learned': 'Learned',
+};
 
 // ── Utilities ────────────────────────────────────────────────────────────────
 
@@ -32,7 +39,10 @@ function closeModal(overlay) {
 async function loadSongs(query = '') {
     const url = query ? `/api/songs?q=${encodeURIComponent(query)}` : '/api/songs';
     const res = await fetch(url);
-    const songs = await res.json();
+    let songs = await res.json();
+    if (activeFilter !== 'all') {
+        songs = songs.filter(s => (s.status || 'wishlist') === activeFilter);
+    }
     renderSongs(songs);
 }
 
@@ -47,12 +57,14 @@ function renderSongs(songs) {
     songs.forEach((song, i) => {
         const card = document.createElement('div');
         card.className = 'song-card';
+        const status = song.status || 'wishlist';
         card.innerHTML = `
             <div class="song-info">
                 <h3><a class="song-title-link" href="/song/${i}">${escHtml(song.title)}</a></h3>
                 <div class="song-meta">
                     <span>🎸 ${escHtml(song.tuning)}</span>
                     <span>🎵 Capo ${song.capo}</span>
+                    <span class="status-badge status-${status}">${STATUS_LABELS[status] || status}</span>
                 </div>
             </div>
             <div class="song-actions">
@@ -71,6 +83,17 @@ function escHtml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
 }
+
+// ── Filter tabs ──────────────────────────────────────────────────────────────
+
+document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeFilter = tab.dataset.status;
+        loadSongs(searchInput.value.trim());
+    });
+});
 
 // ── Search ───────────────────────────────────────────────────────────────────
 
@@ -105,6 +128,7 @@ async function openEdit(index) {
     document.getElementById('field-link').value = song.link;
     document.getElementById('field-tuning').value = song.tuning;
     document.getElementById('field-capo').value = song.capo;
+    document.getElementById('field-status').value = song.status || 'wishlist';
     openModal(songModal);
 }
 
@@ -115,6 +139,7 @@ songForm.addEventListener('submit', async (e) => {
         link: document.getElementById('field-link').value.trim(),
         tuning: document.getElementById('field-tuning').value.trim(),
         capo: parseInt(document.getElementById('field-capo').value, 10),
+        status: document.getElementById('field-status').value,
     };
 
     const url = editingIndex !== null ? `/api/songs/${editingIndex}` : '/api/songs';
