@@ -89,7 +89,7 @@ function renderSongs(songs) {
                 <h3><a class="song-title-link" href="/song/${i}">${escHtml(song.title)}</a></h3>
                 <div class="song-meta">
                     <span>🎸 ${escHtml(song.tuning)}</span>
-                    <span>🎵 Capo ${song.capo}</span>
+                    <span>Capo ${song.capo}</span>
                     <span class="status-badge status-${status}">${STATUS_LABELS[status] || status}</span>
                 </div>
             </div>
