@@ -1,0 +1,37 @@
+[
+    {
+        "title": "Blackbird",
+        "link": "https://www.youtube.com/watch?v=T9jMYfDFyP8",
+        "tuning": "EADGBe",
+        "capo": 0,
+        "status": "learned"
+    },
+    {
+        "title": "Wonderwall",
+        "link": "https://www.youtube.com/watch?v=o8wM8inaqmo",
+        "tuning": "EADGBe",
+        "capo": 2,
+        "status": "in-progress"
+    },
+    {
+        "title": "Hotel California Solo",
+        "link": "https://www.youtube.com/watch?v=1opgh7ky2nU",
+        "tuning": "EADGBe",
+        "capo": 0,
+        "status": "wishlist"
+    },
+    {
+        "title": "Romanza",
+        "link": "https://www.youtube.com/watch?v=ftjaBJyNXwc",
+        "tuning": "EADGBE",
+        "capo": 0,
+        "status": "in-progress"
+    },
+    {
+        "title": "Wonderful Tonight",
+        "link": "https://www.youtube.com/watch?v=DysCEjcB-vA",
+        "tuning": "DADGBe",
+        "capo": 0,
+        "status": "wishlist"
+    }
+]
