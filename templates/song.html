@@ -40,8 +40,11 @@
         <a href="{{ song.link }}" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-block; margin-top: 0.75rem;">Open link</a>
     </div>
     {% else %}
-    <div class="no-embed">
-        <p>No link saved for this song.</p>
+    <div class="no-embed no-embed-warn">
+        <div class="no-embed-icon">🎸</div>
+        <p class="no-embed-title">No link saved for this song</p>
+        <p class="no-embed-sub">Head back and edit this song to add a YouTube link.</p>
+        <a href="/" class="btn btn-primary" style="display:inline-block; margin-top: 1.25rem;">Go back and edit</a>
     </div>
     {% endif %}
 </main>
