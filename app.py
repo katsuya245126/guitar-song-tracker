@@ -138,9 +138,10 @@ def import_songs():
         return jsonify({'error': 'Invalid JSON'}), 400
 
     # Validate basic structure
-    required = {'title', 'link', 'tuning', 'capo'}
+    required = {'title', 'tuning', 'capo'}
     for song in incoming:
         song.setdefault('status', 'wishlist')
+        song.setdefault('link', '')
         if not required.issubset(song.keys()):
             return jsonify({'error': 'Invalid song format'}), 400
 
