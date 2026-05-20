@@ -10,6 +10,9 @@ let editingIndex = null;
 let pendingImport = null;
 let toastTimer = null;
 let activeFilter = 'all';
+let activeTuning = '';
+
+const tuningFilter = document.getElementById('tuning-filter');
 
 const STATUS_LABELS = {
     'wishlist': 'Wishlist',
@@ -43,7 +46,21 @@ async function loadSongs(query = '') {
     if (activeFilter !== 'all') {
         songs = songs.filter(s => (s.status || 'wishlist') === activeFilter);
     }
+    if (activeTuning) {
+        songs = songs.filter(s => s.tuning.toLowerCase() === activeTuning.toLowerCase());
+    }
     renderSongs(songs);
+    updateTuningOptions(songs);
+}
+
+function updateTuningOptions(filteredSongs) {
+    // Collect all tunings from the full unfiltered list to keep options stable
+    const current = tuningFilter.value;
+    fetch('/api/songs').then(r => r.json()).then(all => {
+        const tunings = [...new Set(all.map(s => s.tuning.toUpperCase()))].sort();
+        tuningFilter.innerHTML = '<option value="">All tunings</option>' +
+            tunings.map(t => `<option value="${t}"${t === current.toUpperCase() ? ' selected' : ''}>${t}</option>`).join('');
+    });
 }
 
 function renderSongs(songs) {
@@ -93,6 +110,11 @@ document.querySelectorAll('.filter-tab').forEach(tab => {
         activeFilter = tab.dataset.status;
         loadSongs(searchInput.value.trim());
     });
+});
+
+tuningFilter.addEventListener('change', () => {
+    activeTuning = tuningFilter.value;
+    loadSongs(searchInput.value.trim());
 });
 
 // ── Search ───────────────────────────────────────────────────────────────────

@@ -23,11 +23,16 @@
         <button class="btn btn-secondary" id="search-btn">Search</button>
     </div>
 
-    <div class="filter-tabs">
-        <button class="filter-tab active" data-status="all">All</button>
-        <button class="filter-tab" data-status="wishlist">Wishlist</button>
-        <button class="filter-tab" data-status="in-progress">In Progress</button>
-        <button class="filter-tab" data-status="learned">Learned</button>
+    <div class="filter-row">
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-status="all">All</button>
+            <button class="filter-tab" data-status="wishlist">Wishlist</button>
+            <button class="filter-tab" data-status="in-progress">In Progress</button>
+            <button class="filter-tab" data-status="learned">Learned</button>
+        </div>
+        <select id="tuning-filter">
+            <option value="">All tunings</option>
+        </select>
     </div>
 
     <div id="song-list"></div>
