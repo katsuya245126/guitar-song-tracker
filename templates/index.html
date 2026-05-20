@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Song Tracker</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Guitar Song Tracker</h1>
+    <div class="header-actions">
+        <button class="btn btn-secondary" id="import-btn">Import</button>
+        <button class="btn btn-secondary" id="export-btn">Export</button>
+        <button class="btn btn-primary" id="add-btn">+ Add Song</button>
+    </div>
+</header>
+
+<main>
+    <div class="search-bar">
+        <input type="search" id="search-input" placeholder="Search by title...">
+        <button class="btn btn-secondary" id="search-btn">Search</button>
+    </div>
+
+    <div id="song-list"></div>
+</main>
+
+<!-- Add / Edit Modal -->
+<div class="modal-overlay" id="song-modal">
+    <div class="modal">
+        <h2 id="modal-title">Add Song</h2>
+        <form id="song-form">
+            <div class="form-group">
+                <label for="field-title">Title</label>
+                <input type="text" id="field-title" placeholder="Song title" required>
+            </div>
+            <div class="form-group">
+                <label for="field-link">Link</label>
+                <input type="url" id="field-link" placeholder="https://..." required>
+            </div>
+            <div class="form-group">
+                <label for="field-tuning">Tuning</label>
+                <input type="text" id="field-tuning" placeholder="e.g. EADGBe" required>
+            </div>
+            <div class="form-group">
+                <label for="field-capo">Capo position (0 = none)</label>
+                <input type="number" id="field-capo" min="0" max="9" value="0" required>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-ghost" id="modal-cancel">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div class="modal-overlay" id="import-modal">
+    <div class="modal">
+        <h2>Import Songs</h2>
+        <div class="form-group">
+            <label for="import-file">Choose a guitar_songs.json file</label>
+            <input type="file" id="import-file" accept=".json" style="color:#e0e0e0; padding: 0.4rem 0;">
+        </div>
+        <div class="form-actions" style="margin-top: 0.75rem;">
+            <button type="button" class="btn btn-ghost" id="import-cancel">Cancel</button>
+            <button type="button" class="btn btn-primary" id="import-upload-btn">Upload</button>
+        </div>
+
+        <div id="conflict-section" style="display:none;">
+            <p>The following songs already exist in your library:</p>
+            <ul class="conflict-list" id="conflict-list"></ul>
+            <p>What would you like to do with these duplicates?</p>
+            <div class="conflict-actions">
+                <button type="button" class="btn btn-ghost" id="import-skip-btn">Skip duplicates</button>
+                <button type="button" class="btn btn-primary" id="import-overwrite-btn">Overwrite</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

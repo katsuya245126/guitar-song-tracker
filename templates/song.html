@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ song.title }} — Guitar Song Tracker</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Guitar Song Tracker</h1>
+    <div class="header-actions">
+        <a href="/" class="btn btn-secondary">← Back</a>
+    </div>
+</header>
+
+<main class="detail-main">
+    <div class="detail-header">
+        <h2>{{ song.title }}</h2>
+        <div class="song-meta" style="margin-top: 0.5rem;">
+            <span>🎸 {{ song.tuning }}</span>
+            <span>🎵 Capo {{ song.capo }}</span>
+        </div>
+    </div>
+
+    {% if embed_url %}
+    <div class="video-wrapper">
+        <iframe
+            src="{{ embed_url }}"
+            title="{{ song.title }}"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+    {% elif song.link %}
+    <div class="no-embed">
+        <p>This link can't be embedded.</p>
+        <a href="{{ song.link }}" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-block; margin-top: 0.75rem;">Open link</a>
+    </div>
+    {% else %}
+    <div class="no-embed">
+        <p>No link saved for this song.</p>
+    </div>
+    {% endif %}
+</main>
+
+</body>
+</html>
